@@ -19,7 +19,7 @@ http.createServer((request, response) => {
     filePath = (__dirname + '/documentation.html');
   } else {
     filePath = 'index.html';
-  }
+  } 
 
   fs.readFile(filePath, (err, data) => {
     if (err) {
@@ -34,3 +34,7 @@ http.createServer((request, response) => {
 
 }).listen(8080);
 console.log('My test server is running on Port 8080.');
+
+URL:/
+Timestamp: Wed Nov 18 2020 10:29AM PST (Pacific Standard Time)
+
