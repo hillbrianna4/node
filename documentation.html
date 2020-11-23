@@ -1,1 +1,110 @@
-for project
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation</title>
+</head>
+<body>
+<header>
+  <h1> Welcome to the theatre!</h1>
+  <h2> creates a REST API with Node.js</h2>
+  </header>
+  <<section>
+    <h3> Objective:</h3>
+    <p> to build the server-side component of a "movies" web application.</p>
+    <p>The web application will provide users with access to information about different movies, directors and genres.</p>
+    <p>Users will be able to sign up, update their personal information, and create a list of their faovrite movies</p>
+    </section>
+    <section>
+      <table>
+        <tr>
+          <th>Business Logic</th>
+          <th>URL Endpoint</th>
+          <th> HTTP Method</th>
+          <th>Request Body</th>
+          <th>Request Example</th>
+          <th>Response Body</th>
+          <th>Response Example</th>
+       </tr>
+       <tr>
+         <td> Get a list of all movies</td>
+         <td> Movies</td>
+         <td>GET</td>
+         <td>None</td>
+         <td>/movies</td>
+         <td> JSON
+           <td>{<br> "Genre":{<br> "Name":"Weird fiction",<br>"description":"Comedy-drama The motif of this dramatic work is triumph over unpleasant circumstance by creating comic effects, resulting in a happy or successful conclusion. Thus, the purpose of comedy is to amuse the audience"}<br>},
+             <br><br> "Director":{<br>"Name": "John Hughes",<br>"Bio":"He is best known for his coming-of-age teen comedy films which often combined magic realism with honest depictions of suburban teenage life.",<br>"Birth": "February 18, 1950"<br> "Death": "August 6th 2009"<br>},<br><br>
+             "_id":5b6c88930",<br><br>"Title":"The Breakfast Club",<br><br>
+             "Description":"On Saturday, March 24, 1984, five students at the fictional Shermer High School report at 7:00 a.m. for all-day detention. Each comes from a different clique: Claire Standish, a snobbish beauty; Brian Johnson, a brainiac; Andrew Clark, a wrestler; John Bender, a rebel; and Allison Reynolds, a shy girl with unusual behaviour. They gather in the school library, where Assistant Principal Richard Vernon instructs them not to talk, move from their seats, or sleep until they are released at 4:00 p.m. He assigns them a thousand-word essay, in which each must describe "who you think you are". He leaves, returning only occasionally to check on them."
+             <br><br>
+             "ImagePath":"", <br><br>"Featured": true<br>}</td>
+             <tr>
+               <td>Return data about genre of a movie by its title, use %20 for spaces</td>
+               <td>/movies/genres/:Title</td>
+               <td>GET</td>
+               <td>None</td>
+               <td>/movies/genres/The Breakfast Club</td>
+               <td>JSON</td>
+               <td>{<br>"Genre":"Comedy-drama",<br> "Description":"Comedy drama The motif of this dramatic work is triumph over unpleasant circumstance by creating comic effects, resulting in a happy or successful conclusion. Thus, the purpose of comedy is to amuse the audience"<br>}
+                 </td>
+                 </tr>
+                 <tr>
+                   <tr>
+       <td>Allow new users to register</td>
+       <td>/users</td>
+       <td>POST</td>
+       <td>JSON</td>
+       <td>{<br>"Username": "hillbri",<br> "Password": "candy12345!",<br>"Email": "hillbrianna44@gmail.com",<br>"Date of Birth": "04/20/1997"<br>}</td>
+       <td>JSON</td>
+       <td>{<br>"FavoriteMovies": [ ],<br>"_id": "5f85b4f19cf40f02a8c1e74c",<br>"Username": "hillbri",<br> "Password": "candy12345",<br>"Email": "hillbrianna44@gmail.com",<br>"Birthdate": "1997-04-20T04:00:00.000Z",<br>"__v": 0<br>}</td>
+     </tr>
+     <tr>
+       <td>Allow users to update their user information</td>
+       <td>/users/:Username</td>
+       <td>PUT</td>
+       <td>JSON</td>
+       <td>{<br>"Username": "hillbri",<br> "Password": "candy12345!",<br>"Email": "hillbrianna44@gmail.com",<br>"Date of Birth": "04/20/1997"<br>}</td>
+       <td>JSON</td>
+       <td>{<br>"FavoriteMovies": [ ],<br>"_id": "5f85b4f19cf40f02a8c1e74c",<br>"Username": "hillbrianna44",<br> "Password": "candy12345!",<br>"Email": "hillbrianna44@gmail.com",<br>"Birthdate": "1997-04-20T04:00:00.000Z",<br>"__v": 0<br>}</td>
+     </tr>
+     <tr>
+       <td>Allow users to add a movie to their list of favorites</td>
+       <td>/users/:Username/Movies/:MovieID</td>
+       <td>POST</td>
+       <td>None</td>
+       <td>/users/gregvincent/Movies/5f8053202ba736251567996b</td>
+       <td>JSON</td>
+       <td>{<br>    "FavoriteMovies": [<br>"5f8053202ba736251567996b"<br>],<br>"_id": "5f85b4f19cf40f02a8c1e74c",<br>"Username": "hillbrianna",<br> "Password": "candy12345!",<br>"Email": "hillbri",<br>"Birthdate": "1997-04-20T04:00:00.000Z",<br>"__v": 0<br>}</td>
+     </tr>
+     <tr>
+       <td>Allow users to remove a movie from their list of favorites</td>
+       <td>/users/:Username/Movies/:MovieID</td>
+       <td>DELETE</td>
+       <td>None</td>
+       <td>/users/hillbrianna/movies/5b6c88930</td>
+       <td>JSON
+       <td>{<br>"FavoriteMovies": [ ],<br>"_id": "5f85b4f19cf40f02a8c1e74c",<br>"Username": "hillbri",<br> "Password": "candy12345!",<br>"Email": "hillbrianna44@gmailcom",<br>"Birthdate": "1997-04-20T04:00:00.000Z",<br>"__v": 0<br>}</td>
+     </tr>
+     <tr>
+       <td>Allow existing users to deregister</td>
+       <td>/users/:Username</td>
+       <td>DELETE</td>
+       <td>None</td>
+       <td>/users/hillbri</td>
+       <td>Message</td>
+       <td>"hillbri was successfully deregistered from myFlix."</td>
+     </tr>
+   </table>
+ </section>
+
+
+
+
+       </tr>
+
+
+      </table>
+</body>
+</html>
