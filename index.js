@@ -14,7 +14,7 @@ methodOverride = require('method-override');
 let topMovies = [
   {
     title:'Kikis Delivery Service' ,
-    genre:'anime',
+    genre:'animation',
     data_about_director:{
     director: 'Hayao Miyazaki',
     description:,
@@ -22,7 +22,7 @@ let topMovies = [
   },
 
   { title: 'The Land before Time',
-  genre:'cartoon',
+  genre:'animation',
   data_about_director:{
   director: 'Don Bluth',
 }
@@ -139,7 +139,7 @@ app.get('/topMovies/:title/genre',(req,res) =>{
 });
 
 //gets data about a single director
-app.get('/topMovies/:data_about_director', (req,res)=>{
+app.get('/movies/directors/:/directorName', (req,res)=>{
 res.json(topMovies.find(topMovies)=>
 return topMovies.data_about_director === req.params.data_about_director}));
 )}
