@@ -95,7 +95,7 @@ app.get('/documentation',(req, res)=>{
 
   });
 
-  app.get('/books',(req, res)=>{
+  app.get('/movies',(req, res)=>{
     res.json(topMovies);
   });
 }
@@ -128,23 +128,39 @@ app.use((err, req, res, next) => {
 });
 app.use(bodyParser.json());
 
-//Gets the list of data about ALL movies
-app.get('/topMovies'),(req, res) =>{res.json(topMovies);
+//Return a list of ALL movies to the user GET
+app.get('/movies/:Title'),(req, res) =>{res.json(topMovies);
 });
 
-//gets data about a single movies
-app.get('/topMovies/:title/genre',(req,res) =>{
+//Returns data about a genre(description) by name and title
+app.get('/movies/director/:genreName',(req,res) =>{
   res.json(topMovies.find((topMovies) =>
 {return topMovies.title.genre === req.params.title.genre}));
 });
 
-//gets data about a single director
+//returns data about a director(bio, birth year, death year)
 app.get('/movies/directors/:/directorName', (req,res)=>{
 res.json(topMovies.find(topMovies)=>
 return topMovies.data_about_director === req.params.data_about_director}));
 )}
-//adds data for a new movie to our list of topMovies
-app.post('/topMovies',(req,res)=>){
+
+// allow new users to registers
+app.post('/users',(req, res)=>{
+  let newUser = req.body;
+  if (!newUser.name){
+    const message = 'Missing name in request body';
+    res.status(400).send(message);
+  }else{
+    newUser.id=uuid.v4();
+    user.push(newUser);
+    res.status(201).send(newUser);
+  }
+  }
+});
+
+
+//allow users to add a movie to their list of favorites
+app.post('/users/:username/movies/:movieId',(req,res)=>){
   let newMovie = req.body;
   if (!newMovie.title){
     const message = 'Missing title name in request body';
@@ -155,8 +171,9 @@ app.post('/topMovies',(req,res)=>){
     res.status(201).send(newMovie);
   }
 });
+
 //deletes a movie from our list by ID
-app.delete('/topMovies/:title',(req, res)=>{
+app.delete('/users/:username/movies/:movieId',(req, res)=>{
   let topMovies = topMovies.find((topMovies)=>{
     topMovies.title === req.params.title});
     if (topMovies){
@@ -166,13 +183,23 @@ app.delete('/topMovies/:title',(req, res)=>{
       });
     }
 });
+
+//allow existing users to deregister
+app.delete('/users/:username', (req,res)=>{
+  let user = user.find((user)=>{
+    return user.id === req.params.id});
+    if(user){
+      user= user.filter((obj)=>{return obj.id !==req.params.id});
+      res.status(201).send ('User ' + req.params.id + ' was deleted.');
+    }
+});
 // update the user info
-app.put('/topMovies/:topMovies/:title/:genre')(req,res)=>{
-let topMovies = topMovies.find((topMovies)=>{return topMovies.title === req.params.title});
-if (topMovies){
-  topMovies.data_about_director[req.params.data_about_director] = parseInt(req.params.user);
-  res.status(201).send('movie'+ req.params.title+ ' was assigned a grade of '+ req.params.user +' in '+ req.params.data_about_director);
-} else{
-  res.status(404).send('Director with the name '+ req.params.director + ' was not found. ');
-}
+app.put('/user/:username')(req,res)=>{
+  let user = user.find((user)=> { return user.username === req.params.username});
+  if(user){
+    user.info[req.params.info] = parseInt(req.params.info);
+    res.status(201).send('user ' + req.params.username + 'in ' + req.params.info);
+  } else {
+    res.status(404).send ('User ' + req.params.username + ' was not found.');
+  }
 });
