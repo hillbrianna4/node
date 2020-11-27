@@ -1,0 +1,5 @@
+{"_id":{"$oid":"5fc044e1a130755e6c59df89"},"username":"hillbrianna44","password":"1234","email":"hillbrianna44@gmail.com","Birthday":"04/20/1997","FavoriteMovies":[]}
+{"_id":{"$oid":"5fc04619a130755e6c59df8a"},"username":"MissKimmi","password":"4567","email":"misskimmi@gmail.com","birthday":"07/25/2011","FavoriteMovies":[]}
+{"_id":{"$oid":"5fc04690a130755e6c59df8b"},"username":"Misabear","password":"4321","email":"misagirl12@gmail.com","birthday":"07/25/2014","FavoriteMovies":[]}
+{"_id":{"$oid":"5fc0472ba130755e6c59df8c"},"username":"Khill0097","password":"8765","email":"khill0094@gmail.com","birthday":"04/27/1958","FavoriteMovies":[]}
+{"_id":{"$oid":"5fc04805a130755e6c59df8d"},"username":"williamsh","password":"8910","email":"williams@gmail.com","birthday":"10/04/1950","FavoriteMovies":[]}
