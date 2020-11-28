@@ -7,8 +7,17 @@ uuid= require('uuid');
 const app = express();
 const bodyParser = require('body-parser'),
 methodOverride = require('method-override');
+const mongoose = require("mongoose");
+const Models = require("./models.js");
 
+const Movies = Models.Movie;
+const Users = Models.Users;
+const Genres = Models.Genre;
+const Director= Models.Director;
 
+mongoose.connect('mongodb://localhost:27017/dbname',
+ { useNewUrlParser: true,
+   useUnifiedTopology: true });
 
 
 let topMovies = [
