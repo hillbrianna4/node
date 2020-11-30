@@ -3,6 +3,9 @@ const app = express();
 morgan = require ('morgan');
 bodyParser=require('body-parser'),
 uuid= require('uuid');
+let auth = require('./auth')(app);
+const passport = require('./passport');
+
 //error handling
 const app = express();
 const bodyParser = require('body-parser'),
@@ -15,7 +18,7 @@ const Users = Models.Users;
 const Genres = Models.Genre;
 const Director= Models.Director;
 
-mongoose.connect('mongodb://localhost:27017/dbname',
+mongoose.connect('mongodb://localhost:27017/myMovies',
  { useNewUrlParser: true,
    useUnifiedTopology: true });
 
@@ -131,6 +134,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json());
 app.use(methodOverride());
+app.use(bodyParser.json();
 
 app.use((err, req, res, next) => {
   // logic
@@ -212,3 +216,16 @@ app.put('/user/:username')(req,res)=>{
     res.status(404).send ('User ' + req.params.username + ' was not found.');
   }
 });
+
+// GET request to the "/movies" URL"
+app.get('/movies', passport.autheticate('jwt',{session
+  : false}), (req, res)=>{
+    Movies.find()
+    .then((movies)=>{
+      res.status(201).json(movies);
+    })
+    .catch((error)=>{
+      console.error(error);
+      res.status(500).send('Error:' + error);
+    });
+  });
