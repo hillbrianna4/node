@@ -5,6 +5,9 @@ bodyParser=require('body-parser'),
 uuid= require('uuid');
 let auth = require('./auth')(app);
 const passport = require('./passport');
+const cors = require('cors');
+const {check, validationResult} = require('express-validator');
+
 
 //error handling
 const app = express();
@@ -18,7 +21,7 @@ const Users = Models.Users;
 const Genres = Models.Genre;
 const Director= Models.Director;
 
-mongoose.connect('mongodb://localhost:27017/myMovies',
+mongoose.connect('mongodb+srv://myFlixDBAdmin:Rarugal99!@cluster0.sz2tr.mongodb.net/myMovies?retryWrites=true&w=majority',
  { useNewUrlParser: true,
    useUnifiedTopology: true });
 
@@ -122,9 +125,12 @@ app.get('/secreturl', (req, res) => {
   res.send('This is a secret url with super top-secret content.');
 
 // listen for requests
-app.listen(8080,()=>
-console.log('Your app is listneing on port 8080.');
-);
+const port = process.env.PORT || 8080;
+app.listen(port,'0.0.0.0',()=>{
+console.log('Listening on port'+ port)
+});
+
+
 const bodyParser = require('body-parser'),
   methodOverride = require('method-override');
 
@@ -229,3 +235,67 @@ app.get('/movies', passport.autheticate('jwt',{session
       res.status(500).send('Error:' + error);
     });
   });
+
+
+
+  //cors
+  app.use(cors());
+let allowedOrigins = ['http://localhost:8080','http://testsite.com'];
+
+app.use(cors({
+  origins:(origins, callback)=>{
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin)=== -1){
+      // If a specific origin isn’t found on the list of allowed origins
+      let message = 'the CORS policy for this appication doesnt allow access from origin' + origin;
+      return callback(new Error(message ),false);
+    }
+    return callback(null, true);
+  }
+}));
+
+app.post('/users',
+//Validation logic here for requests
+//you can either use a chain of methods like .not() .isEmpty(
+//which means "opposite of isEmpty" in plain English "is not empty"
+//or use .isLength({min:5}) which means
+//minimum vlaue of 5 characters are only allowed
+[
+  check('Username', 'Username is required').isLength({min:5}),
+  check('Username', 'Username contains non alphanumeric character - not allowed.').isAlphaNumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
+  check('Email', 'Email does not appear to be valid').isEmail()
+], (req,res)=>{
+  //check the validation object for errors
+  let errors = validationResults(req);
+
+  if(!errors.isEmpty()){
+    return res.status(422).json({errors:errors.array() });
+  }
+  let hashedPassword = Users.hashPassword(req.body.Password);
+  Users.findOne({ Username: req.body.Username})//Search to see if a user with the requested username already exists
+  .then((user)=>{
+    if(user) {
+      //If the user is found, send a response that it already exists
+      return res.status(400).send(req.body.Username + 'already exists');
+    } else {
+      Users
+      .create({
+        Username: req.body.Username,
+        Password: hashedPassword,
+        Email: req.body.Email,
+        Birthday: req.body.Birtday
+      })
+      .then((user)=>{ res.status(201).json(user) })
+      .catch((error)=> {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      });
+    }
+  })
+.catch((error)=>{
+  console.error(error);
+  res.status(500).send('Error: ' + error);
+});
+
+});
